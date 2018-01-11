@@ -1,0 +1,69 @@
+# .gitattributes 1.0.0
+# Created 2015-11-05
+# Updated 2015-11-05
+# Standard attributes for repos.  Primary purpose is to normalize line endings due to mixed OS environment.
+
+# Default catch, add extensions necessary if warnings encountered
+* text=auto
+
+# Source code text files to normalize to LF
+*.py         text diff=python
+*.cs         text diff=csharp
+*.sql        text
+*.xml        text
+*.xsl        text
+*.htm        text
+*.html       text
+*.js         text
+*.css        text
+*.asmx       text
+*.aspx       text
+*.htaccess   text
+*.php        text
+
+# Configuration files
+*.ini        text
+*.inc        text
+*.cfg        text
+*.config     text
+
+# Windows project files, preserve standard crlf to avoid Visual Studio issues
+*.sln        text eol=crlf
+*.csproj     text eol=crlf
+
+# Batch scripts and build files
+*.md         text
+*.sh         text
+*.ps1        text
+*.cmd        text
+*.bat        text
+*.markdown   text
+*.msbuild    text
+
+# Other text files
+*.csv        text
+*.log        text
+*.txt        text
+
+# Binary files, do not modify
+# This includes things like images as well as executable and other compiled objects
+*.png        binary
+*.jpg        binary
+*.jpeg       binary
+*.gif        binary
+*.ico        binary
+
+*.lib        binary
+*.dll        binary
+*.exe        binary
+*.pfx        binary
+*.snk        binary
+*.exp        binary
+*.pdb        binary
+*.sdf        binary
+*.7z         binary
+*.zip        binary
+*.gz         binary
+
+# Leave for reference how to ignore relative path
+# dll/*      binary
