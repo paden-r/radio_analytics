@@ -106,8 +106,8 @@ class KROX_Analytics(object):
         for timestamp, data in info.items():
             artist = data['artist']
             title = data['title']
-            tweet_message = "@JasonAndDeb @101x is making another questionable \
-                            decision by playing {0} by {1} at {2}".format(title, artist, timestamp)
+            tweet_message = "@101x is making a questionable decision by playing \
+                            {0} by {1} at {2} @JasonAndDeb".format(title, artist, timestamp)
             self.bot.tweet(tweet_message)
 
     def input_broadcast_history(self):
