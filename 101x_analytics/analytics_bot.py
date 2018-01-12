@@ -1,10 +1,11 @@
+import sys
 import pickle
 import logging
 import datetime
 import os
-from .twitter_bot import TwitterBot as Tb
-from .screen_scraper import ScreenScrapper as Ss
-from .db_connector import PostgreSQL as Ps
+from twitter_bot import TwitterBot as Tb
+from screen_scraper import ScreenScrapper as Ss
+from db_connector import PostgreSQL as Ps
 
 
 class KROX_Analytics(object):
@@ -14,11 +15,11 @@ class KROX_Analytics(object):
         self.pickle_file_name = "last_run.pkl"
         self.db = Ps()
         self.logger = None
+        self.log_directory = os.environ['LOG_DIRECTORY']
         self.build_logger()
         self.broadcast_info = None
         self.ordered_list_of_timestamps = None
         self.questionable_flag = None
-        self.log_directory = os.environ['LOG_DIRECTORY']
 
     def build_logger(self):
         """
@@ -87,14 +88,14 @@ class KROX_Analytics(object):
                 flags.append(obj[0])
             elif isinstance(obj, str):
                 flags.append(obj)
-        questionalbe_decisions = []
+        questionable_decisions = []
 
         for timestamp, data in self.broadcast_info.items():
             if data['artist'] in flags:
-                questionalbe_decisions.append({timestamp: data})
+                questionable_decisions.append({timestamp: data})
 
-        if questionalbe_decisions:
-            self.questionable_flag = questionalbe_decisions
+        if questionable_decisions:
+            self.questionable_flag = questionable_decisions
 
     def shame(self, info):
         """
@@ -144,6 +145,12 @@ class KROX_Analytics(object):
 
 if __name__ == '__main__':
     analytics = KROX_Analytics()
-    analytics.run()
+    if len(sys.argv) > 1:
+        analytics.broadcast_info = {'10:32am': {'artist': 'Staind', 'title': 'Outside'}}
+        analytics.analyze_broadcast_history()
+        analytics.logger(analytics.questionable_flag)
+        analytics.shame()
+    else:
+        analytics.run()
 
 
