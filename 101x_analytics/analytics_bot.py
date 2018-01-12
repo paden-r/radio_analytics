@@ -149,7 +149,7 @@ if __name__ == '__main__':
         analytics.broadcast_info = {'10:32am': {'artist': 'Staind', 'title': 'Outside'}}
         analytics.analyze_broadcast_history()
         analytics.logger(analytics.questionable_flag)
-        analytics.shame()
+        analytics.shame(analytics.questionable_flag)
     else:
         analytics.run()
 
