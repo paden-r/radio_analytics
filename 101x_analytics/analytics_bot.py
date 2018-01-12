@@ -1,4 +1,3 @@
-import sys
 import pickle
 import logging
 import datetime
@@ -59,7 +58,8 @@ class KROX_Analytics(object):
         if not last_run:
             self.ordered_list_of_timestamps, self.broadcast_info = self.scrapper.parse_broadcast_page()
         else:
-            self.ordered_list_of_timestamps, self.broadcast_info = self.scrapper.parse_broadcast_page(time_threshold=last_run['time_stamp'])
+            self.ordered_list_of_timestamps, self.broadcast_info = self.scrapper.parse_broadcast_page(
+                time_threshold=last_run['time_stamp'])
         if len(self.ordered_list_of_timestamps) == 0:
             self.log(['INFO', 'No new boradcast history', 'exiting'])
             exit(0)
@@ -108,8 +108,8 @@ class KROX_Analytics(object):
             for timestamp, data in flag.items():
                 artist = data['artist']
                 title = data['title']
-                tweet_message = "@101x is making a questionable decision by playing \
-                                {0} by {1} at {2} @JasonAndDeb".format(title, artist, timestamp)
+                tweet_message = "@101x is making a questionable decision by playing {0} by {1} at {2} @JasonAndDeb".format(
+                    title, artist, timestamp)
                 self.bot.tweet(tweet_message)
 
     def input_broadcast_history(self):
@@ -146,12 +146,4 @@ class KROX_Analytics(object):
 
 if __name__ == '__main__':
     analytics = KROX_Analytics()
-    if len(sys.argv) > 1:
-        analytics.broadcast_info = {'10:32am': {'artist': 'Staind', 'title': 'Outside'}}
-        analytics.analyze_broadcast_history()
-        analytics.logger(analytics.questionable_flag)
-        analytics.shame(analytics.questionable_flag)
-    else:
-        analytics.run()
-
-
+    analytics.run()
