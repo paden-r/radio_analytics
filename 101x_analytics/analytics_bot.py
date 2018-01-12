@@ -110,7 +110,9 @@ class KROX_Analytics(object):
                 title = data['title']
                 tweet_message = "@101x is making a questionable decision by playing {0} by {1} at {2} @JasonAndDeb".format(
                     title, artist, timestamp)
-                self.bot.tweet(tweet_message)
+                success, error_message = self.bot.tweet(tweet_message)
+                if not success:
+                    self.logger(error_message)
 
     def input_broadcast_history(self):
         """

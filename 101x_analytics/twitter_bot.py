@@ -22,7 +22,11 @@ class TwitterBot(object):
         :return:
         :type message: str
         """
-        self.bot.update_status(message)
+        try:
+            self.bot.update_status(message)
+            return True, ""
+        except tweepy.TweepError as error:
+            return False, error
 
     def tweet_image(self, image_name, message):
         """
@@ -33,7 +37,11 @@ class TwitterBot(object):
         :type image_name: str
         :type message: str
         """
-        self.bot.update_with_media(image_name, message)
+        try:
+            self.bot.update_with_media(image_name, message)
+            return True, ""
+        except tweepy.TweepError as error:
+            return False, error
 
 
 if __name__ == '__main__':
