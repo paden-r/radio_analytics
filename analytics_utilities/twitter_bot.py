@@ -42,8 +42,3 @@ class TwitterBot(object):
             return True, ""
         except tweepy.TweepError as error:
             return False, error
-
-
-if __name__ == '__main__':
-    bot = TwitterBot()
-    bot.run()

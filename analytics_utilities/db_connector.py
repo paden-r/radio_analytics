@@ -1,5 +1,6 @@
 import psycopg2
 import os
+import json
 
 
 class PostgreSQL(object):
@@ -54,6 +55,44 @@ class PostgreSQL(object):
                  VALUES ('{}', '{}', '{}');".format(data[0], data[1].replace("'", "''"), data[2].replace("'", "''"))
         self.cursor.execute(query, data)
         self.connection.commit()
+
+    def get_broadcast_history(self):
+        """
+        Dumps out all of the broadcast_history table
+        :return:
+        """
+        query = "SELECT * FROM broadcast_history;"
+        self.cursor.execute(query)
+        rows_returned = self.cursor.fetchall()
+        return rows_returned
+
+    def insert_into_daily_summary(self):
+        """
+        Inserts a row into the daily_summary table
+        :return:
+        """
+        pass
+
+    def insert_into_daily_details(self):
+        """
+        Inserts a row into the daily_detail table
+        :return:
+        """
+        pass
+
+    def insert_hourly_counts(self):
+        """
+        Inserts a row into the hourly_count table
+        :return:
+        """
+        pass
+
+    def clear_broadcast_history(self):
+        """
+        Function that will clean out the broadcast history table after the data has been reorganize into a useful format
+        :return:
+        """
+        pass
 
     def disconnect(self):
         """
