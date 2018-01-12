@@ -104,12 +104,13 @@ class KROX_Analytics(object):
         :type info: dict
         :return:
         """
-        for timestamp, data in info.items():
-            artist = data['artist']
-            title = data['title']
-            tweet_message = "@101x is making a questionable decision by playing \
-                            {0} by {1} at {2} @JasonAndDeb".format(title, artist, timestamp)
-            self.bot.tweet(tweet_message)
+        for flag in info:
+            for timestamp, data in flag.items():
+                artist = data['artist']
+                title = data['title']
+                tweet_message = "@101x is making a questionable decision by playing \
+                                {0} by {1} at {2} @JasonAndDeb".format(title, artist, timestamp)
+                self.bot.tweet(tweet_message)
 
     def input_broadcast_history(self):
         """
