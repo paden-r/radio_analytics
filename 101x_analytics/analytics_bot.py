@@ -11,7 +11,7 @@ class KROX_Analytics(object):
     def __init__(self):
         self.bot = Tb()
         self.scrapper = Ss("http://www.101x.com/broadcasthistory")
-        self.pickle_file_name = "last_run.pkl"
+        self.pickle_file_name = os.environ['PKL_FILE']
         self.db = Ps()
         self.logger = None
         self.log_directory = os.environ['LOG_DIRECTORY']
