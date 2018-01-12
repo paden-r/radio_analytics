@@ -18,7 +18,7 @@ class KROX_Analytics(object):
         self.log_directory = os.environ['LOG_DIRECTORY']
         self.build_logger()
         self.broadcast_info = None
-        self.ordered_list_of_timestamps = None
+        self.lastest_timestamp = None
         self.questionable_flag = None
 
     def build_logger(self):
@@ -57,18 +57,17 @@ class KROX_Analytics(object):
             last_run = {}
 
         if not last_run:
-            self.ordered_list_of_timestamps, self.broadcast_info = self.scrapper.parse_broadcast_page()
+            self.lastest_timestamp, self.broadcast_info = self.scrapper.parse_broadcast_page()
         else:
-            self.ordered_list_of_timestamps, self.broadcast_info = self.scrapper.parse_broadcast_page(
+            self.lastest_timestamp, self.broadcast_info = self.scrapper.parse_broadcast_page(
                 time_threshold=last_run['time_stamp'])
-        if len(self.ordered_list_of_timestamps) == 0:
+        if self.lastest_timestamp is None:
             self.log(['INFO', 'No new boradcast history', 'exiting'])
             exit(0)
         else:
             self.logger(self.broadcast_info)
-        latest_timestamp = self.ordered_list_of_timestamps[0]
-        self.log(['INFO', 'Latest timestamp', str(latest_timestamp)])
-        last_run['time_stamp'] = latest_timestamp
+        self.log(['INFO', 'Latest timestamp', str(self.lastest_timestamp)])
+        last_run['time_stamp'] = self.lastest_timestamp
         pickle.dump(last_run, open(self.pickle_file_name, 'wb'))
         self.log(['INFO', 'Got broadcast history'])
 
