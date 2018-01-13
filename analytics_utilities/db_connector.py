@@ -88,7 +88,7 @@ class PostgreSQL(object):
         :return:
         """
         for time_stamp, details_dict in data.items():
-            string_details = json.dumps(summary_dict)
+            string_details = json.dumps(details_dict)
             query = "INSERT INTO daily_details (timestamp, details) \
                      VALUES ('{}', '{}');".format(time_stamp, string_details)
 
