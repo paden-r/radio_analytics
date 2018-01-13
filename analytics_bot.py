@@ -207,7 +207,13 @@ class KROXAnalytics(object):
                 self.log(row)
                 exit(-1)
 
-        self.log(['INFO', 'Finished getting broadcast history and have organized it'])
+        self.log(['INFO', 'Finished getting broadcast history and have organized it', 'sending to db'])
+        self.db.insert_into_daily_summary(daily_artist_count)
+        self.log(['INFO', 'Inserted daily summary'])
+        self.db.insert_into_daily_details(daily_artist_song_count)
+        self.log(['INFO', 'Inserted daily details'])
+        self.db.insert_hourly_counts(song_hourly_count)
+        self.log(['INFO', 'Finished all db inserts', 'shutting down'])
 
     def run_end_of_month_analytics(self):
         """
