@@ -8,7 +8,7 @@ from analytics_utilities.screen_scraper import ScreenScrapper as Ss
 from analytics_utilities.db_connector import PostgreSQL as Ps
 
 
-class KROX_Analytics(object):
+class KROXAnalytics(object):
     def __init__(self):
         self.bot = Tb()
         self.scrapper = Ss("http://www.101x.com/broadcasthistory")
@@ -219,14 +219,14 @@ class KROX_Analytics(object):
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
-        analytics = KROX_Analytics()
+        analytics = KROXAnalytics()
         analytics.get_broadcast_history()
     elif sys.argv[1] in ['eod', "eom"]:
         if sys.argv[1] == 'eod':
-            analytics = KROX_Analytics()
+            analytics = KROXAnalytics()
             analytics.run_end_of_day_procedures()
         if sys.argv[1] == 'eom':
-            analytics = KROX_Analytics()
+            analytics = KROXAnalytics()
             analytics.run_end_of_month_analytics()
     else:
         print("Unknown parameters given")

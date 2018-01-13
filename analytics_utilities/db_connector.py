@@ -66,26 +66,50 @@ class PostgreSQL(object):
         rows_returned = self.cursor.fetchall()
         return rows_returned
 
-    def insert_into_daily_summary(self):
+    def insert_into_daily_summary(self, data):
         """
         Inserts a row into the daily_summary table
+        :param data: dictionary of data data['timestamp'] = {artist totals}
+        :type data: dict
         :return:
         """
-        pass
+        for time_stamp, summary_dict in data.items():
+            string_summary = json.dumps(summary_dict)
+            query = "INSERT INTO daily_summary (timestamp, summary) \
+                     VALUES ('{}', '{}');".format(time_stamp, string_summary)
 
-    def insert_into_daily_details(self):
+            self.cursor.execute(query, data)
+            self.connection.commit()
+
+    def insert_into_daily_details(self, data):
         """
         Inserts a row into the daily_detail table
+        :param data: dictionary of data data['timestamp'] = {artist: {song totals}}
+        :type data: dict
         :return:
         """
-        pass
+        for time_stamp, details_dict in data.items():
+            string_details = json.dumps(summary_dict)
+            query = "INSERT INTO daily_details (timestamp, details) \
+                     VALUES ('{}', '{}');".format(time_stamp, string_details)
 
-    def insert_hourly_counts(self):
+            self.cursor.execute(query, data)
+            self.connection.commit()
+
+    def insert_hourly_counts(self, data):
         """
         Inserts a row into the hourly_count table
+        :param data: dictionary of data data['timestamp'] = {00: 6, 01: 8 ... }
+        :type data: dict
         :return:
         """
-        pass
+        for time_stamp, time_totals in data.items():
+            string_totals = json.dumps(time_totals)
+            query = "INSERT INTO hourly_count (timestamp, count) \
+                     VALUES ('{}', '{}');".format(time_stamp, string_totals)
+
+            self.cursor.execute(query, data)
+            self.connection.commit()
 
     def clear_broadcast_history(self):
         """
