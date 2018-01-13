@@ -37,7 +37,6 @@ class PostgreSQL(object):
         Grabs the rows in the questionable_flags table in the post gres db
         :return:
         """
-        assert(self.cursor, psycopg2)
         sql_string = "SELECT * FROM questionable_flags;"
         self.cursor.execute(sql_string)
         rows = self.cursor.fetchall()
