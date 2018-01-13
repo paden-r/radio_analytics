@@ -152,6 +152,11 @@ class KROXAnalytics(object):
         :return:
         """
         self.log(['INFO', 'Getting the broadcast history'])
+        success, error = self.db.connect_to_db()
+        if not success:
+            self.log(['ERROR', 'DB error', error])
+            exit(-1)
+
         broadcast_data = self.db.get_broadcast_history()
         daily_artist_count = {}
         daily_artist_song_count = {}
@@ -213,6 +218,7 @@ class KROXAnalytics(object):
         self.log(['INFO', 'Inserted daily details'])
         self.db.insert_hourly_counts(song_hourly_count)
         self.log(['INFO', 'Finished all db inserts', 'shutting down'])
+        self.db.disconnect()
 
     def run_end_of_month_analytics(self):
         """
