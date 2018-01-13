@@ -115,7 +115,10 @@ class PostgreSQL(object):
         Function that will clean out the broadcast history table after the data has been reorganize into a useful format
         :return:
         """
-        pass
+        query = "TRUNCATE broadcast_history;"
+        self.cursor.execute(query)
+        self.connection.commit()
+
 
     def disconnect(self):
         """
