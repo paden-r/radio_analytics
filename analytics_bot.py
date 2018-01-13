@@ -152,7 +152,6 @@ class KROXAnalytics(object):
         :return:
         """
         self.log(['INFO', 'Getting the broadcast history'])
-        self.start_up()
         broadcast_data = self.db.get_broadcast_history()
         daily_artist_count = {}
         daily_artist_song_count = {}
