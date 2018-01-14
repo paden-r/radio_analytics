@@ -3,6 +3,7 @@ import pickle
 import logging
 import datetime
 import os
+import pytz
 from analytics_utilities.twitter_bot import TwitterBot as Tb
 from analytics_utilities.screen_scraper import ScreenScrapper as Ss
 from analytics_utilities.db_connector import PostgreSQL as Ps
@@ -29,7 +30,7 @@ class KROXAnalytics(object):
         name = 'analytics'
         logging_level = logging.DEBUG
         logger = logging.getLogger(name)
-        today = datetime.datetime.today().strftime('%Y-%m-%d')
+        today = datetime.datetime.now(pytz.timezone('America/Chicago')).strftime('%Y-%m-%d')
         file_handler = logging.FileHandler('{}/{}_{}.log'.format(self.log_directory, name, today))
         formatter = logging.Formatter("%(asctime)s %(message)s", "%Y-%m-%d %H:%M:%S")
         file_handler.setFormatter(formatter)
@@ -119,7 +120,7 @@ class KROXAnalytics(object):
         Function that inserts the scrapped broadcast history into the DB
         :return:
         """
-        today = datetime.datetime.today().strftime('%m/%d/%Y')
+        today = datetime.datetime.now(pytz.timezone('America/Chicago')).strftime('%m/%d/%Y')
         for timestamp, data in self.broadcast_info.items():
             full_timestamp = "{} {}".format(today, timestamp)
             insert_data = (full_timestamp, data['artist'], data['title'])
