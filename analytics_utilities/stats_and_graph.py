@@ -1,4 +1,5 @@
 import datetime
+import matplotlib
 
 
 class StatsAndGraph(object):
@@ -18,7 +19,7 @@ class StatsAndGraph(object):
         :return:
         """
         if logger is None:
-            logger = lambda x: print(x)
+            logger = print
         daily_artist_count = {}
         daily_artist_song_count = {}
         song_hourly_count = {}

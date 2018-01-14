@@ -119,6 +119,25 @@ class PostgreSQL(object):
         self.cursor.execute(query)
         self.connection.commit()
 
+    def get_weekly_data(self, tables, start, end):
+        """
+        Function that queries the daily_summary table for rows with a timestamp between the start and end dates
+        :param tables: a list of tables to query
+        :type tables: list
+        :param start: start date
+        :type start: str
+        :param end: end date
+        :type end: str
+        :return: a tuple of data (timestamp, data dict)
+        """
+        return_data = []
+        for table in tables:
+            query = "SELECT * FROM {} WHERE \"timestamp\" >= '{}' AND \"timestamp\" < '{}';".format(table, start, end)
+            self.cursor.execute(query)
+            return_data.append(self.cursor.fetchall)
+
+        return return_data
+
 
     def disconnect(self):
         """

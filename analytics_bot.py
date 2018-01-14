@@ -187,6 +187,14 @@ class KROXAnalytics(object):
         self.bot = Tb()
         self.stat_and_graph = SaG()
         self.db = Ps()
+        delta = datetime.timedelta(days=7)
+        start_date_obj = datetime.datetime.today() - delta
+        start_date = start_date_obj.strftime('%m/%d/%Y')
+        end_date = datetime.datetime.today().strftime('%m/%d/%Y')
+        self.log(['INFO', 'Calculated start date and end date for the week', start_date, end_date])
+        tables_to_query = ['daily_summary', 'daily_details', 'hourly_count']
+        # weekly_data = [summary, details, hourly]
+        weekly_data = self.db.get_weekly_data(tables=tables_to_query, start=start_date, end=end_date)
 
     def run_end_of_month_analytics(self):
         """
