@@ -108,7 +108,7 @@ class KROXAnalytics(object):
             for timestamp, data in flag.items():
                 artist = data['artist']
                 title = data['title']
-                tweet_message = "@101x is making a questionable decision by playing {0} by {1} at {2} @JasonAndDeb".format(
+                tweet_message = "@101x is making a questionable decision by playing \"{0}\" by {1} at {2} @JasonAndDeb".format(
                     title, artist, timestamp)
                 success, error_message = self.bot.tweet(tweet_message)
                 if not success:
