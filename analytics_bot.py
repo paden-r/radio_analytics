@@ -194,6 +194,7 @@ class KROXAnalytics(object):
         self.twitter = Tb()
         self.stat_and_graph = SaG()
         self.db = Ps()
+        self.db.connect_to_db()
         self.work_directory = os.environ['WORK_DIRECTORY']
         delta = datetime.timedelta(days=7)
         start_date_obj = datetime.datetime.today() - delta
