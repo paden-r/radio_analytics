@@ -216,7 +216,7 @@ class KROXAnalytics(object):
         success, error = self.twitter.tweet_image(image_name=summary_image, message=summary_message)
         if not success:
             self.logger(['ERROR', 'error sending tweet', error])
-            exit{-1}
+            exit(-1)
 
     def run_end_of_month_analytics(self):
         """
