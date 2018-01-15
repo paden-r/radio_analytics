@@ -134,7 +134,7 @@ class PostgreSQL(object):
         for table in tables:
             query = "SELECT * FROM {} WHERE \"timestamp\" >= '{}' AND \"timestamp\" < '{}';".format(table, start, end)
             self.cursor.execute(query)
-            return_data.append(self.cursor.fetchall)
+            return_data.append(self.cursor.fetchall())
 
         return return_data
 
