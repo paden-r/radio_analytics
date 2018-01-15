@@ -232,6 +232,9 @@ if __name__ == '__main__':
         if sys.argv[1] == 'eod':
             analytics = KROXAnalytics()
             analytics.run_end_of_day_procedures()
+        if sys.argv[1] == 'eow':
+            analytics = KROXAnalytics()
+            analytics.run_end_of_week_analytics()
         if sys.argv[1] == 'eom':
             analytics = KROXAnalytics()
             analytics.run_end_of_month_analytics()
