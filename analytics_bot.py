@@ -208,9 +208,14 @@ class KROXAnalytics(object):
         summary_obj = summary_data.SummaryData()
         for summary_data_tuple in weekly_data[0]:
             summary_obj.data_intake(summary_data_tuple[1])
+        summary_obj.get_max()
         self.stat_and_graph.graph_summary_data(summary_obj, self.work_directory)
+        if isinstance(summary_obj.most_common, list):
+            most_common = ', '.join(summary_obj.most_common)
+        else:
+            most_common = summary_obj.most_common
         summary_message = "INCOMPLETE DATA: Weekly ({} - {}) song count per artist on @101x.  Number of artist found: {}. Most played artist: {} @JasonAndDeb".format(
-            start_date, end_date, len(summary_obj.summary_dict), summary_obj.most_common)
+            start_date, end_date, len(summary_obj.summary_dict), most_common)
         self.log(['INFO', 'length of twitter message: {}'.format(len(summary_message))])
         summary_image = '{}/summary_bar.png'.format(self.work_directory)
         success, error = self.twitter.tweet_image(image_name=summary_image, message=summary_message)
