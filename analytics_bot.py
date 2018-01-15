@@ -221,7 +221,7 @@ class KROXAnalytics(object):
 
 
 if __name__ == '__main__':
-    if sys.argv[1] in ['eod', "eom", 'url']:
+    if sys.argv[1] in ['eod', 'eow', 'eom', 'url']:
         if sys.argv[1] == 'url':
             if len(sys.argv) == 3:
                 analytics = KROXAnalytics()
