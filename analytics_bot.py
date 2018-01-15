@@ -212,7 +212,7 @@ class KROXAnalytics(object):
         summary_message = "INCOMPLETE DATA: Weekly ({} - {}) song count per artist on @101x.  Number of artist found: {}. Most played artist: {} @JasonAndDeb".format(
             start_date, end_date, len(summary_obj.summary_dict), summary_obj.most_common)
         self.logger(['INFO', 'length of twitter message: {}'.format(len(summary_message))])
-        summary_image = '{}/summary_image.png'
+        summary_image = '{}/summary_bar.png'
         success, error = self.twitter.tweet_image(image_name=summary_image, message=summary_message)
         if not success:
             self.logger(['ERROR', 'error sending tweet', error])
