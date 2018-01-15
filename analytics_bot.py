@@ -208,8 +208,8 @@ class KROXAnalytics(object):
         for summary_data_tuple in weekly_data[0]:
             summary_obj.data_intake(summary_data_tuple[1])
         self.stat_and_graph.graph_summary_data(summary_obj, self.work_directory)
-        summary_message = "INCOMPLETE DATA: Weekly song count per artist on @101x.  Number of artist found: {}. Most played artist: {} @JasonAndDeb".format(
-            len(summary_obj.summary_dict), summary_obj.most_common)
+        summary_message = "INCOMPLETE DATA: Weekly ({} - {}) song count per artist on @101x.  Number of artist found: {}. Most played artist: {} @JasonAndDeb".format(
+            start_date, end_date, len(summary_obj.summary_dict), summary_obj.most_common)
         summary_image = '{}/summary_image.png'
         self.twitter.tweet_image(image_name=summary_image, message=summary_message)
 
