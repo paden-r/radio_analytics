@@ -3,15 +3,17 @@ import pickle
 import logging
 import datetime
 import os
+from requests.exceptions import ConnectionError
 from analytics_utilities.twitter_bot import TwitterBot as Tb
 from analytics_utilities.screen_scraper import ScreenScrapper as Ss
 from analytics_utilities.db_connector import PostgreSQL as Ps
 from analytics_utilities.stats_and_graph import StatsAndGraph as SaG
+from analytics_utilities.data_models import summary_data
 
 
 class KROXAnalytics(object):
     def __init__(self):
-        self.bot = None
+        self.twitter = None
         self.scrapper = None
         self.pickle_file_name = None
         self.db = None
@@ -22,6 +24,7 @@ class KROXAnalytics(object):
         self.broadcast_info = None
         self.latest_timestamp = None
         self.questionable_flag = None
+        self.work_directory = None
 
     def build_logger(self):
         """
@@ -53,8 +56,12 @@ class KROXAnalytics(object):
         Function that is called first and gets the newest data
         :return:
         """
-        self.bot = Tb()
-        self.scrapper = Ss(broadcast_url)
+        self.twitter = Tb()
+        try:
+            self.scrapper = Ss(broadcast_url)
+        except ConnectionError as error:
+            self.log(error)
+            exit(-1)
         self.pickle_file_name = os.environ['PKL_FILE']
         self.db = Ps()
         try:
@@ -116,7 +123,7 @@ class KROXAnalytics(object):
                 title = data['title']
                 tweet_message = "@101x is making a questionable decision by playing \"{0}\" by {1} at {2} @JasonAndDeb".format(
                     title, artist, timestamp)
-                success, error_message = self.bot.tweet(tweet_message)
+                success, error_message = self.twitter.tweet(tweet_message)
                 if not success:
                     self.logger(error_message)
 
@@ -184,9 +191,10 @@ class KROXAnalytics(object):
         Function that gathers a weeks worth of data and does some basic analytics
         :return:
         """
-        self.bot = Tb()
+        self.twitter = Tb()
         self.stat_and_graph = SaG()
         self.db = Ps()
+        self.work_directory = os.environ['WORK_DIRECTORY']
         delta = datetime.timedelta(days=7)
         start_date_obj = datetime.datetime.today() - delta
         start_date = start_date_obj.strftime('%m/%d/%Y')
@@ -195,6 +203,14 @@ class KROXAnalytics(object):
         tables_to_query = ['daily_summary', 'daily_details', 'hourly_count']
         # weekly_data = [summary, details, hourly]
         weekly_data = self.db.get_weekly_data(tables=tables_to_query, start=start_date, end=end_date)
+        summary_obj = summary_data.SummaryData()
+        for summary_data_tuple in weekly_data[0]:
+            summary_obj.data_intake(summary_data_tuple[1])
+        self.stat_and_graph.graph_summary_data(summary_obj, self.work_directory)
+        summary_message = "INCOMPLETE DATA: Weekly song count per artist on @101x.  Number of artist found: {}. Most played artist: {} @JasonAndDeb".format(
+            len(summary_obj.summary_dict), summary_obj.most_common)
+        summary_image = '{}/summary_image.png'
+        self.twitter.tweet_image(image_name=summary_image, message=summary_message)
 
     def run_end_of_month_analytics(self):
         """
@@ -222,5 +238,3 @@ if __name__ == '__main__':
     else:
         print("Unknown parameters given")
         exit(-1)
-
-

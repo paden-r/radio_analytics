@@ -31,6 +31,37 @@ class SummaryData(object):
         """
         min = 0
         max = 0
+        multiple_max = []
+        multiple_min = []
         for artist, count in self.summary_dict.items():
             if min == 0:
-                pass
+                self.most_common = artist
+                self.least_common = artist
+                min = count
+                max = count
+                continue
+
+            if count > max:
+                max = count
+                multiple_max = [artist]
+                self.most_common = artist
+
+            if count == max:
+                if artist not in multiple_max:
+                    multiple_max.append(artist)
+
+            if count < min:
+                min = count
+                multiple_min = [artist]
+                self.least_common = artist
+
+            if count == min:
+                if artist not in multiple_min:
+                    multiple_min.append(artist)
+
+        if len(multiple_max) > 1:
+            self.most_common = multiple_max
+
+        if len(multiple_min) > 1:
+            self.least_common = multiple_min
+
