@@ -1,6 +1,8 @@
 import datetime
 from .data_models import summary_data
 import numpy
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as pl
 
 
