@@ -196,7 +196,7 @@ class KROXAnalytics(object):
         self.db = Ps()
         self.db.connect_to_db()
         self.work_directory = os.environ['WORK_DIRECTORY']
-        self.logger(['INFO', 'STARTING WEEKLY PROCEDURES'])
+        self.log(['INFO', 'STARTING WEEKLY PROCEDURES'])
         delta = datetime.timedelta(days=7)
         start_date_obj = datetime.datetime.today() - delta
         start_date = start_date_obj.strftime('%m/%d/%Y')
@@ -211,11 +211,11 @@ class KROXAnalytics(object):
         self.stat_and_graph.graph_summary_data(summary_obj, self.work_directory)
         summary_message = "INCOMPLETE DATA: Weekly ({} - {}) song count per artist on @101x.  Number of artist found: {}. Most played artist: {} @JasonAndDeb".format(
             start_date, end_date, len(summary_obj.summary_dict), summary_obj.most_common)
-        self.logger(['INFO', 'length of twitter message: {}'.format(len(summary_message))])
-        summary_image = '{}/summary_bar.png'
+        self.log(['INFO', 'length of twitter message: {}'.format(len(summary_message))])
+        summary_image = '{}/summary_bar.png'.format(self.work_directory)
         success, error = self.twitter.tweet_image(image_name=summary_image, message=summary_message)
         if not success:
-            self.logger(['ERROR', 'error sending tweet', error])
+            self.logger(error)
             exit(-1)
 
     def run_end_of_month_analytics(self):
