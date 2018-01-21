@@ -233,7 +233,7 @@ class KROXAnalytics(object):
             incomplete_data_flag = ''
         else:
             incomplete_data_flag = 'INCOMPLETE DATA: '
-        summary_message = "{}Weekly ({} - {}) play count per artist on @101x.  Number of artist found: {}. Top 3 artist: 1. {}  2. {} 3.{}@JasonAndDeb".format(
+        summary_message = "{}Weekly ({} - {}) play count per artist on @101x.  Number of artist found: {}. Top 3 artist: 1. {}  2. {} 3.{} @JasonAndDeb".format(
             incomplete_data_flag, start_date, end_date, len(summary_obj.summary_dict), most_common, second_common, third_common)
         self.log(['INFO', 'length of twitter message: {}'.format(len(summary_message))])
         summary_image = '{}/summary_bar.png'.format(self.work_directory)
@@ -257,7 +257,7 @@ class KROXAnalytics(object):
         else:
             third_common = details_obj.third_most
 
-        details_message = "{}Weekly ({} - {}) song diversity per artist on @101x.  Top 3 artist: 1. {}  2. {} 3.{}@JasonAndDeb".format(
+        details_message = "{}Weekly ({} - {}) song diversity per artist on @101x.  Top 3 artist: 1. {}  2. {} 3.{} @JasonAndDeb".format(
             incomplete_data_flag, start_date, end_date, most_common, second_common,
             third_common)
         self.log(['INFO', 'length of twitter message: {}'.format(len(details_message))])

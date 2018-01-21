@@ -95,7 +95,7 @@ class StatsAndGraph(object):
             y_axis.append(count)
 
         y_pos = numpy.arange(len(x_axis))
-        figure = pl.figure(figsize=(17, 5))
+        figure = pl.figure(figsize=(17, 6))
         ax = pl.subplot(111)
         ax.bar(y_pos, y_axis)
         pl.xticks(y_pos, x_axis, rotation=90, fontsize=10)
@@ -126,7 +126,7 @@ class StatsAndGraph(object):
             y_axis.append(len(songs))
 
         y_pos = numpy.arange(len(x_axis))
-        figure = pl.figure(figsize=(17, 5))
+        figure = pl.figure(figsize=(17, 6))
         ax = pl.subplot(111)
         ax.bar(y_pos, y_axis)
         pl.xticks(y_pos, x_axis, rotation=90, fontsize=10)
