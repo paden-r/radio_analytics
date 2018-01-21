@@ -208,8 +208,9 @@ class KROXAnalytics(object):
         summary_obj = summary_data.SummaryData()
         details_obj = detail_data.DetailData()
         for summary_data_tuple in weekly_data[0]:
-            summary_obj.data_intake(summary_data_tuple[0])
-            details_obj.data_intake(summary_data_tuple[1])
+            summary_obj.data_intake(summary_data_tuple[1])
+        for detail_data_tuple in weekly_data[1]:
+            details_obj.data_intake(detail_data_tuple[1])
         summary_obj.get_max()
         details_obj.get_max()
         self.stat_and_graph.graph_summary_data(summary_obj, self.work_directory)
