@@ -8,7 +8,7 @@ from analytics_utilities.twitter_bot import TwitterBot as Tb
 from analytics_utilities.screen_scraper import ScreenScrapper as Ss
 from analytics_utilities.db_connector import PostgreSQL as Ps
 from analytics_utilities.stats_and_graph import StatsAndGraph as SaG
-from analytics_utilities.data_models import summary_data
+from analytics_utilities.data_models import summary_data, detail_data
 
 
 class KROXAnalytics(object):
@@ -206,19 +206,62 @@ class KROXAnalytics(object):
         # weekly_data = [summary, details, hourly]
         weekly_data = self.db.get_weekly_data(tables=tables_to_query, start=start_date, end=end_date)
         summary_obj = summary_data.SummaryData()
+        details_obj = detail_data.DetailData()
         for summary_data_tuple in weekly_data[0]:
-            summary_obj.data_intake(summary_data_tuple[1])
+            summary_obj.data_intake(summary_data_tuple[0])
+            details_obj.data_intake(summary_data_tuple[1])
         summary_obj.get_max()
+        details_obj.get_max()
         self.stat_and_graph.graph_summary_data(summary_obj, self.work_directory)
+        self.stat_and_graph.graph_detail_data(details_obj, self.work_directory)
         if isinstance(summary_obj.most_common, list):
             most_common = ', '.join(summary_obj.most_common)
         else:
             most_common = summary_obj.most_common
-        summary_message = "INCOMPLETE DATA: Weekly ({} - {}) song count per artist on @101x.  Number of artist found: {}. Most played artist: {} @JasonAndDeb".format(
-            start_date, end_date, len(summary_obj.summary_dict), most_common)
+
+        if isinstance(summary_obj.second_most, list):
+            second_common = ', '.join(summary_obj.second_most)
+        else:
+            second_common = summary_obj.second_most
+
+        if isinstance(summary_obj.third_most, list):
+            third_common = ', '.join(summary_obj.third_most)
+        else:
+            third_common = summary_obj.third_most
+        if summary_obj.data_count == 7:
+            incomplete_data_flag = ''
+        else:
+            incomplete_data_flag = 'INCOMPLETE DATA: '
+        summary_message = "{}Weekly ({} - {}) play count per artist on @101x.  Number of artist found: {}. Top 3 artist: 1. {}  2. {} 3.{}@JasonAndDeb".format(
+            incomplete_data_flag, start_date, end_date, len(summary_obj.summary_dict), most_common, second_common, third_common)
         self.log(['INFO', 'length of twitter message: {}'.format(len(summary_message))])
         summary_image = '{}/summary_bar.png'.format(self.work_directory)
         success, error = self.twitter.tweet_image(image_name=summary_image, message=summary_message)
+        if not success:
+            self.logger(error)
+            exit(-1)
+
+        if isinstance(details_obj.most_common, list):
+            most_common = ', '.join(details_obj.most_common)
+        else:
+            most_common = details_obj.most_common
+
+        if isinstance(details_obj.second_most, list):
+            second_common = ', '.join(details_obj.second_most)
+        else:
+            second_common = details_obj.second_most
+
+        if isinstance(details_obj.third_most, list):
+            third_common = ', '.join(details_obj.third_most)
+        else:
+            third_common = details_obj.third_most
+
+        details_message = "{}Weekly ({} - {}) song diversity per artist on @101x.  Top 3 artist: 1. {}  2. {} 3.{}@JasonAndDeb".format(
+            incomplete_data_flag, start_date, end_date, most_common, second_common,
+            third_common)
+        self.log(['INFO', 'length of twitter message: {}'.format(len(details_message))])
+        details_image = '{}/details_bar.png'.format(self.work_directory)
+        success, error = self.twitter.tweet_image(image_name=details_image, message=details_message)
         if not success:
             self.logger(error)
             exit(-1)

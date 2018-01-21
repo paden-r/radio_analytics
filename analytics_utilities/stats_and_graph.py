@@ -95,14 +95,45 @@ class StatsAndGraph(object):
             y_axis.append(count)
 
         y_pos = numpy.arange(len(x_axis))
-        figure = pl.figure(figsize=(15, 5))
+        figure = pl.figure(figsize=(17, 5))
         ax = pl.subplot(111)
         ax.bar(y_pos, y_axis)
-        pl.xticks(y_pos, x_axis, rotation=90, fontsize=8)
+        pl.xticks(y_pos, x_axis, rotation=90, fontsize=10)
         pl.ylabel('Times Played')
         pl.title('Amount of Plays per Artist')
 
         image_name = '{}/{}'.format(work_directory, 'summary_bar.png')
+        image = open(image_name, 'wb')
+        image.close()
+        pl.savefig(image_name)
+
+    @staticmethod
+    def graph_detail_data(detail_data, work_directory):
+        """
+        Function that creates a bar graph out of the given summary_data
+        :param summary_data: object containing all of the collected summary data
+        :type summary_data: summary_data.SummaryData
+        :param work_directory: the directory where images can be saved
+        :type work_directory: str
+        :return:
+        """
+        x_axis = []
+        y_axis = []
+        for artist, songs in detail_data.details_dict.items():
+            if len(songs) == 1:
+                continue  # ignore artist with one song
+            x_axis.append(artist)
+            y_axis.append(len(songs))
+
+        y_pos = numpy.arange(len(x_axis))
+        figure = pl.figure(figsize=(17, 5))
+        ax = pl.subplot(111)
+        ax.bar(y_pos, y_axis)
+        pl.xticks(y_pos, x_axis, rotation=90, fontsize=10)
+        pl.ylabel('Number of different songs')
+        pl.title('Diversity of Songs Played per Artist')
+
+        image_name = '{}/{}'.format(work_directory, 'details_bar.png')
         image = open(image_name, 'wb')
         image.close()
         pl.savefig(image_name)

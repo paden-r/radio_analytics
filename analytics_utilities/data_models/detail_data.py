@@ -1,12 +1,12 @@
 import json
 
 
-class SummaryData(object):
+class DetailData(object):
     """
     Class definition for summary data object
     """
     def __init__(self):
-        self.summary_dict = {}
+        self.details_dict = {}
         self.most_common = None
         self.second_most = None
         self.third_most = None
@@ -21,11 +21,13 @@ class SummaryData(object):
         """
         data_dict = json.loads(intake_data)
         self.data_count += 1
-        for artist, count in data_dict.items():
-            if artist not in self.summary_dict:
-                self.summary_dict[artist] = int(count)
+        for artist, song_dict in data_dict.items():
+            if artist not in self.details_dict:
+                self.details_dict[artist] = song_dict
             else:
-                self.summary_dict[artist] += int(count)
+                for song in song_dict:
+                    if song not in self.details_dict[artist]:
+                        self.details_dict[artist][song] = song_dict[song]
 
     def get_max(self):
         """
@@ -38,8 +40,8 @@ class SummaryData(object):
         multiple_max = []
         multiple_second = []
         multiple_third = []
-        for artist, count in self.summary_dict.items():
-
+        for artist, songs in self.details_dict.items():
+            count = len(songs)
             if count > max_found:
                 max_found = count
                 multiple_max = [artist]
