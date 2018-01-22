@@ -60,7 +60,7 @@ class KROXAnalytics(object):
         try:
             self.scrapper = Ss(broadcast_url)
         except ConnectionError as error:
-            self.log(error)
+            self.logger(error)
             exit(-1)
         self.pickle_file_name = os.environ['PKL_FILE']
         self.db = Ps()
