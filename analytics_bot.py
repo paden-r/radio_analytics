@@ -205,6 +205,7 @@ class KROXAnalytics(object):
         tables_to_query = ['daily_summary', 'daily_details', 'hourly_count']
         # weekly_data = [summary, details, hourly]
         weekly_data = self.db.get_weekly_data(tables=tables_to_query, start=start_date, end=end_date)
+        # TODO: Everything below here needs to go into a function or something better than what is here now
         summary_obj = summary_data.SummaryData()
         details_obj = detail_data.DetailData()
         for summary_data_tuple in weekly_data[0]:
@@ -233,7 +234,7 @@ class KROXAnalytics(object):
             incomplete_data_flag = ''
         else:
             incomplete_data_flag = 'INCOMPLETE DATA: '
-        summary_message = "{}Weekly ({} - {}) play count per artist on @101x.  Number of artist found: {}.\nTop 3 artist:\n1. {}\n2. {}\n3.{}\n@JasonAndDeb".format(
+        summary_message = "{}Weekly ({} - {}) play count per artist on @101x.  Number of artist found: {}.\nTop 3 artist:\n1. {}\n2. {}\n3. {}\n@JasonAndDeb".format(
             incomplete_data_flag, start_date, end_date, len(summary_obj.summary_dict), most_common, second_common, third_common)
         self.log(['INFO', 'length of twitter message: {}'.format(len(summary_message))])
         summary_image = '{}/summary_bar.png'.format(self.work_directory)
@@ -257,7 +258,7 @@ class KROXAnalytics(object):
         else:
             third_common = details_obj.third_most
 
-        details_message = "{}Weekly ({} - {}) song diversity per artist on @101x.\nTop 3 artist:\n1. {}\n2. {}\n3.{}\n@JasonAndDeb".format(
+        details_message = "{}Weekly ({} - {}) song diversity per artist on @101x.\nTop 3 artist:\n1. {}\n2. {}\n3. {}\n@JasonAndDeb".format(
             incomplete_data_flag, start_date, end_date, most_common, second_common,
             third_common)
         self.log(['INFO', 'length of twitter message: {}'.format(len(details_message))])
